@@ -23,10 +23,21 @@ type VehicleType {
   longitude: Float!
 }
 
+type IncidentObject {
+  id: Int!
+  type: String!
+  status: String!
+  description: String!
+  latitude: Float!
+  longitude: Float!
+}
+
 type Query {
   hello: String!
   vehicles: [VehicleType!]!
   vehicle(id: Int!): VehicleType!
+  incidents: [IncidentObject!]!
+  incident(id: Int!): IncidentObject!
 }
 
 type Mutation {
@@ -34,4 +45,6 @@ type Mutation {
   login(email: String!, password: String!): AuthResponse!
   createVehicle(brand: String!, model: String!, licensePlate: String!, driverName: String): VehicleType!
   updateVehiclePosition(id: Int!, latitude: Float!, longitude: Float!): VehicleType!
+  createIncident(type: String!, description: String!, latitude: Float!, longitude: Float!): IncidentObject!
+  updateIncidentStatus(id: Int!, status: String!): IncidentObject!
 }
