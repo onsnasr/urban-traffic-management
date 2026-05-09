@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type UserType {
-  id: Float!
+  id: Int!
   email: String!
   role: String!
 }
@@ -68,7 +68,7 @@ type Query {
 }
 
 type Mutation {
-  register(email: String!, password: String!): UserType!
+  register(input: RegisterInput!): UserType!
   login(email: String!, password: String!): AuthResponse!
   createVehicle(brand: String!, model: String!, licensePlate: String!, driverName: String): VehicleType!
   updateVehiclePosition(id: Int!, latitude: Float!, longitude: Float!): VehicleType!
@@ -78,4 +78,10 @@ type Mutation {
   updateIncidentStatus(id: Int!, status: String!): IncidentObject!
   createNotification(message: String!, userId: Int): NotificationType!
   markNotificationAsRead(id: Int!): NotificationType!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  role: String
 }
