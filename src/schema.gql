@@ -23,6 +23,15 @@ type VehicleType {
   longitude: Float!
 }
 
+type TrafficZoneType {
+  id: Int!
+  name: String!
+  latitude: Float!
+  longitude: Float!
+  vehicleCount: Int!
+  density: String!
+}
+
 type IncidentObject {
   id: Int!
   type: String!
@@ -36,6 +45,8 @@ type Query {
   hello: String!
   vehicles: [VehicleType!]!
   vehicle(id: Int!): VehicleType!
+  trafficZones: [TrafficZoneType!]!
+  congestedZones: [TrafficZoneType!]!
   incidents: [IncidentObject!]!
   incident(id: Int!): IncidentObject!
 }
@@ -45,6 +56,8 @@ type Mutation {
   login(email: String!, password: String!): AuthResponse!
   createVehicle(brand: String!, model: String!, licensePlate: String!, driverName: String): VehicleType!
   updateVehiclePosition(id: Int!, latitude: Float!, longitude: Float!): VehicleType!
+  createTrafficZone(name: String!, latitude: Float!, longitude: Float!): TrafficZoneType!
+  updateTrafficDensity(id: Int!, vehicleCount: Int!): TrafficZoneType!
   createIncident(type: String!, description: String!, latitude: Float!, longitude: Float!): IncidentObject!
   updateIncidentStatus(id: Int!, status: String!): IncidentObject!
 }
