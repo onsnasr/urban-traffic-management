@@ -41,6 +41,13 @@ type IncidentObject {
   longitude: Float!
 }
 
+type NotificationType {
+  id: Int!
+  message: String!
+  isRead: Boolean!
+  userId: Int
+}
+
 type Query {
   hello: String!
   vehicles: [VehicleType!]!
@@ -49,6 +56,7 @@ type Query {
   congestedZones: [TrafficZoneType!]!
   incidents: [IncidentObject!]!
   incident(id: Int!): IncidentObject!
+  notifications: [NotificationType!]!
 }
 
 type Mutation {
@@ -60,4 +68,6 @@ type Mutation {
   updateTrafficDensity(id: Int!, vehicleCount: Int!): TrafficZoneType!
   createIncident(type: String!, description: String!, latitude: Float!, longitude: Float!): IncidentObject!
   updateIncidentStatus(id: Int!, status: String!): IncidentObject!
+  createNotification(message: String!, userId: Int): NotificationType!
+  markNotificationAsRead(id: Int!): NotificationType!
 }
