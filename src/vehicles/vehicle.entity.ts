@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { GpsPosition } from './gps-position.entity';
 
 @Entity()
 export class Vehicle {
@@ -22,6 +23,9 @@ export class Vehicle {
 
   @Column({ type: 'float', default: 0 })
   longitude: number;
+
+  @OneToMany(() => GpsPosition, position => position.vehicle)
+  positions: GpsPosition[];
 
   @CreateDateColumn()
   createdAt: Date;

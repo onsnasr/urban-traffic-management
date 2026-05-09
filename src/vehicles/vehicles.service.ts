@@ -2,12 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Vehicle } from './vehicle.entity';
+import { GpsPosition } from './gps-position.entity';
 
 @Injectable()
 export class VehiclesService {
   constructor(
     @InjectRepository(Vehicle)
     private vehicleRepository: Repository<Vehicle>,
+    @InjectRepository(GpsPosition)
+    private gpsRepository: Repository<GpsPosition>,
   ) {}
 
   async create(brand: string, model: string, licensePlate: string, driverName?: string) {
@@ -29,6 +32,13 @@ export class VehiclesService {
     const vehicle = await this.findOne(id);
     vehicle.latitude = latitude;
     vehicle.longitude = longitude;
-    return this.vehicleRepository.save(vehicle);
+    await this.vehicleRepository.save(vehicle);
+    const position = this.gpsRepository.create({ latitude, longitude, vehicleId: id });
+    await this.gpsRepository.save(position);
+    return vehicle;
+  }
+
+  async getHistory(vehicleId: number) {
+    return this.gpsRepository.find({ where: { vehicleId }, order: { recordedAt: 'DESC' } });
   }
 }

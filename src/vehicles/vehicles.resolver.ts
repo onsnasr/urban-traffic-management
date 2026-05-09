@@ -4,6 +4,21 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 
 @ObjectType()
+class GpsPositionType {
+  @Field(() => Int)
+  id: number;
+
+  @Field()
+  latitude: number;
+
+  @Field()
+  longitude: number;
+
+  @Field(() => Int)
+  vehicleId: number;
+}
+
+@ObjectType()
 class VehicleType {
   @Field(() => Int)
   id: number;
@@ -39,6 +54,11 @@ export class VehiclesResolver {
   @Query(() => VehicleType)
   async vehicle(@Args('id', { type: () => Int }) id: number) {
     return this.vehiclesService.findOne(id);
+  }
+
+  @Query(() => [GpsPositionType])
+  async vehicleHistory(@Args('vehicleId', { type: () => Int }) vehicleId: number) {
+    return this.vehiclesService.getHistory(vehicleId);
   }
 
   @UseGuards(JwtAuthGuard)

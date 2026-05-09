@@ -13,6 +13,13 @@ type AuthResponse {
   user: UserType!
 }
 
+type GpsPositionType {
+  id: Int!
+  latitude: Float!
+  longitude: Float!
+  vehicleId: Int!
+}
+
 type VehicleType {
   id: Int!
   brand: String!
@@ -52,6 +59,7 @@ type Query {
   hello: String!
   vehicles: [VehicleType!]!
   vehicle(id: Int!): VehicleType!
+  vehicleHistory(vehicleId: Int!): [GpsPositionType!]!
   trafficZones: [TrafficZoneType!]!
   congestedZones: [TrafficZoneType!]!
   incidents: [IncidentObject!]!
