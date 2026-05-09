@@ -1,5 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int, ObjectType, Field } from '@nestjs/graphql';
 import { VehiclesService } from './vehicles.service';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 
 @ObjectType()
 class VehicleType {
@@ -39,6 +41,7 @@ export class VehiclesResolver {
     return this.vehiclesService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => VehicleType)
   async createVehicle(
     @Args('brand') brand: string,
@@ -49,6 +52,7 @@ export class VehiclesResolver {
     return this.vehiclesService.create(brand, model, licensePlate, driverName);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => VehicleType)
   async updateVehiclePosition(
     @Args('id', { type: () => Int }) id: number,

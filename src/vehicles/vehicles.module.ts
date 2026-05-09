@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { VehiclesService } from './vehicles.service';
 import { VehiclesResolver } from './vehicles.resolver';
 import { Vehicle } from './vehicle.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Vehicle])],
+  imports: [TypeOrmModule.forFeature([Vehicle]), ConfigModule],
   providers: [VehiclesService, VehiclesResolver],
 })
 export class VehiclesModule {}
