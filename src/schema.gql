@@ -13,11 +13,25 @@ type AuthResponse {
   user: UserType!
 }
 
+type VehicleType {
+  id: Int!
+  brand: String!
+  model: String!
+  licensePlate: String!
+  driverName: String
+  latitude: Float!
+  longitude: Float!
+}
+
 type Query {
   hello: String!
+  vehicles: [VehicleType!]!
+  vehicle(id: Int!): VehicleType!
 }
 
 type Mutation {
   register(email: String!, password: String!): UserType!
   login(email: String!, password: String!): AuthResponse!
+  createVehicle(brand: String!, model: String!, licensePlate: String!, driverName: String): VehicleType!
+  updateVehiclePosition(id: Int!, latitude: Float!, longitude: Float!): VehicleType!
 }
