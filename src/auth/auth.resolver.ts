@@ -1,9 +1,10 @@
-import { Resolver, Query, Mutation, Args, ObjectType, Field } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ObjectType, Field, Int } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
+import { RegisterInput } from './dto/register.input';
 
 @ObjectType()
 class UserType {
-  @Field()
+  @Field(() => Int)
   id: number;
 
   @Field()
@@ -32,11 +33,8 @@ export class AuthResolver {
   }
 
   @Mutation(() => UserType)
-  async register(
-    @Args('email') email: string,
-    @Args('password') password: string,
-  ) {
-    return this.authService.register(email, password);
+  async register(@Args('input') input: RegisterInput) {
+    return this.authService.register(input.email, input.password, input.role);
   }
 
   @Mutation(() => AuthResponse)
