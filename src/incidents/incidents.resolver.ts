@@ -2,7 +2,7 @@ import { Resolver, Query, Mutation, Args, Int, ObjectType, Field, Context } from
 import { UseGuards } from '@nestjs/common';
 import { IncidentsService } from './incidents.service';
 import { IncidentType, IncidentStatus } from './incident.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/guards/roles.decorator';
 
