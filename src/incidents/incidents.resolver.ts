@@ -1,6 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int, ObjectType, Field } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ObjectType, Field, Context } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { IncidentsService } from './incidents.service';
 import { IncidentType, IncidentStatus } from './incident.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/guards/roles.decorator';
 
 @ObjectType()
 class IncidentObject {
@@ -38,6 +42,8 @@ export class IncidentsResolver {
   }
 
   @Mutation(() => IncidentObject)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'OPERATOR')
   async createIncident(
     @Args('type') type: IncidentType,
     @Args('description') description: string,
@@ -48,6 +54,8 @@ export class IncidentsResolver {
   }
 
   @Mutation(() => IncidentObject)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   async updateIncidentStatus(
     @Args('id', { type: () => Int }) id: number,
     @Args('status') status: IncidentStatus,
