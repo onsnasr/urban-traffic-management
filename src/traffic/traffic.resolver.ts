@@ -1,5 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int, ObjectType, Field } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { TrafficService } from './traffic.service';
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 
 @ObjectType()
 class TrafficZoneType {
@@ -15,7 +17,7 @@ class TrafficZoneType {
   @Field()
   longitude: number;
 
-  @Field(() => Int)
+  @Field()
   vehicleCount: number;
 
   @Field()
@@ -31,12 +33,18 @@ export class TrafficResolver {
     return this.trafficService.findAll();
   }
 
+  @Query(() => TrafficZoneType)
+  async trafficZone(@Args('id', { type: () => Int }) id: number) {
+    return this.trafficService.findOne(id);
+  }
+
   @Query(() => [TrafficZoneType])
   async congestedZones() {
     return this.trafficService.getCongested();
   }
 
   @Mutation(() => TrafficZoneType)
+  @UseGuards(JwtAuthGuard)
   async createTrafficZone(
     @Args('name') name: string,
     @Args('latitude') latitude: number,
@@ -46,6 +54,7 @@ export class TrafficResolver {
   }
 
   @Mutation(() => TrafficZoneType)
+  @UseGuards(JwtAuthGuard)
   async updateTrafficDensity(
     @Args('id', { type: () => Int }) id: number,
     @Args('vehicleCount', { type: () => Int }) vehicleCount: number,
