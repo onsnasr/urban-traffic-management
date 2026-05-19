@@ -28,6 +28,16 @@ export class VehiclesService {
     return vehicle;
   }
 
+  async findByBrand(brand: string) {
+    return this.vehicleRepository.find({ where: { brand } });
+  }
+
+  async findByLicensePlate(licensePlate: string) {
+    const vehicle = await this.vehicleRepository.findOne({ where: { licensePlate } });
+    if (!vehicle) throw new NotFoundException('Vehicle not found');
+    return vehicle;
+  }
+
   async updatePosition(id: number, latitude: number, longitude: number) {
     const vehicle = await this.findOne(id);
     vehicle.latitude = latitude;
