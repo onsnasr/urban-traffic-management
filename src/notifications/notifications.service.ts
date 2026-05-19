@@ -19,6 +19,10 @@ export class NotificationsService {
     return this.notificationRepository.find();
   }
 
+  async findUnread() {
+    return this.notificationRepository.find({ where: { isRead: false } });
+  }
+
   async markAsRead(id: number) {
     const notification = await this.notificationRepository.findOne({ where: { id } });
     if (!notification) throw new NotFoundException('Notification not found');
